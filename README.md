@@ -55,6 +55,25 @@ openclaw mcp show switchboard
 openclaw mcp list
 ```
 
+## Exact end-user prompt for agent-led install
+
+A user can ask their OpenClaw agent to do the setup for them with this prompt:
+
+```text
+Install the Switchboard MCP server for me.
+
+Steps:
+1. Clone https://github.com/jazarine/switchboard-mcp into my workspace.
+2. Register it in OpenClaw as an MCP server named "switchboard".
+3. Use the production backend URL: https://switchboard-api-production-8c8c.up.railway.app
+4. Do not use SWITCHBOARD_API_KEY in the MCP config.
+5. Configure it with python3 -m switchboard_mcp and PYTHONPATH pointing at the repo's src directory.
+6. Verify it with `openclaw mcp show switchboard`.
+7. Then update my agent instructions so it prefers Switchboard MCP for delegated bookings, approvals, and HITL task input.
+
+After installing, show me the final `openclaw mcp show switchboard` output.
+```
+
 ## Local development run
 
 Local backend:
