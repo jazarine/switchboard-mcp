@@ -11,56 +11,76 @@ This package exposes Switchboard as a stdio MCP server so MCP clients such as Op
 - result retrieval
 - human-in-the-loop pause/resume task input flows
 
-## Install
+## Current easiest setup
 
-Recommended:
+PyPI publishing is not the default install path yet.
+
+Right now the easiest end-user flow is:
+1. clone this repo
+2. register it in OpenClaw as an MCP server
+3. point it at the production Switchboard backend
+
+### Clone the repo
 
 ```bash
-pipx install switchboard-mcp
+git clone https://github.com/jazarine/switchboard-mcp.git
+cd switchboard-mcp
 ```
 
-Or:
+### Register it in OpenClaw against production
 
 ```bash
-pip install switchboard-mcp
+openclaw mcp set switchboard "$(python3 - <<'PY'
+import json
+from pathlib import Path
+repo = Path.cwd().resolve()
+config = {
+    'command': 'python3',
+    'args': ['-m', 'switchboard_mcp'],
+    'cwd': str(repo),
+    'env': {
+        'PYTHONPATH': str(repo / 'src'),
+        'SWITCHBOARD_BASE_URL': 'https://switchboard-api-production-8c8c.up.railway.app'
+    }
+}
+print(json.dumps(config))
+PY
+)"
 ```
 
-## Run
+### Verify
+
+```bash
+openclaw mcp show switchboard
+openclaw mcp list
+```
+
+## Local development run
 
 Local backend:
 
 ```bash
-SWITCHBOARD_BASE_URL=http://127.0.0.1:8000 switchboard-mcp
+PYTHONPATH=./src SWITCHBOARD_BASE_URL=http://127.0.0.1:8000 python3 -m switchboard_mcp
 ```
 
 Production backend:
 
 ```bash
-SWITCHBOARD_BASE_URL=https://switchboard-api-production-8c8c.up.railway.app switchboard-mcp
+PYTHONPATH=./src SWITCHBOARD_BASE_URL=https://switchboard-api-production-8c8c.up.railway.app python3 -m switchboard_mcp
 ```
 
-## OpenClaw setup
+## Future packaged install
 
-Production example:
+Once published to PyPI, the intended install path will be:
 
 ```bash
-openclaw mcp set switchboard '{
-  "command": "switchboard-mcp",
-  "env": {
-    "SWITCHBOARD_BASE_URL": "https://switchboard-api-production-8c8c.up.railway.app"
-  }
-}'
+pipx install switchboard-mcp
 ```
 
-Local example:
+or:
 
 ```bash
-openclaw mcp set switchboard '{
-  "command": "switchboard-mcp",
-  "env": {
-    "SWITCHBOARD_BASE_URL": "http://127.0.0.1:8000"
-  }
-}'
+pip install switchboard-mcp
 ```
 
 ## Important
