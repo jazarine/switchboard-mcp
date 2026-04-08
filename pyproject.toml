@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "switchboard-mcp"
+version = "0.1.0"
+description = "MCP server for the Switchboard HTTP control plane"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Jazarine Jamal", email = "jazarinester@gmail.com" }
+]
+dependencies = [
+  "httpx>=0.27,<1"
+]
+keywords = ["mcp", "switchboard", "agents", "openclaw"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/jazarine/switchboard-mcp"
+Repository = "https://github.com/jazarine/switchboard-mcp"
+Issues = "https://github.com/jazarine/switchboard-mcp/issues"
+
+[project.scripts]
+switchboard-mcp = "switchboard_mcp.server:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
